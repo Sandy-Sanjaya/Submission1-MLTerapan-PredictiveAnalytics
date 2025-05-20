@@ -75,7 +75,7 @@ Dataset ini terdiri dari **5000 data observasi** dan **12 kolom fitur**, termasu
 ### Visualisasi Data (EDA)
 Untuk memperkuat pemahaman terhadap karakteristik dataset, berikut adalah beberapa visualisasi yang dilakukan:
 #### 1. Distribusi Fitur Numerik
-![Distribusi Numerik](https://drive.google.com/file/d/1wolGTFC7p-T_zX-KbNNDNdZ8EVep6PkO/view?usp=drive_link)
+![Distribusi Numerik](images/gambar%201.png)
 
 Visualisasi ini menunjukkan distribusi dari fitur numerik seperti `Month`, `Hour`, `Temperature`, `Humidity`, `SquareFootage`, `Occupancy`, `RenewableEnergy`, dan `EnergyConsumption`. Sebagian besar fitur memiliki distribusi yang cukup merata, dan target `EnergyConsumption` menunjukkan pola mendekati distribusi normal.
 
@@ -83,7 +83,7 @@ Visualisasi ini menunjukkan distribusi dari fitur numerik seperti `Month`, `Hour
 
 #### 2. Distribusi Fitur Kategorikal
 
-![Distribusi Kategorikal](29dbebcc-44b1-4323-8d2f-7fde093b9356.png)
+![Distribusi Kategorikal](images/gambar%202.png)
 
 Visualisasi ini memperlihatkan persebaran nilai dari fitur kategorikal seperti `DayOfWeek`, `Holiday`, `HVACUsage`, dan `LightingUsage`. Jumlah data cenderung seimbang di setiap kategori, yang baik untuk keperluan pemodelan.
 
@@ -91,7 +91,7 @@ Visualisasi ini memperlihatkan persebaran nilai dari fitur kategorikal seperti `
 
 #### 3. Rata-rata Konsumsi Energi per Hari
 
-![Rata-rata Konsumsi Energi](5de6012e-a870-4768-b2d0-7c389d1d2a50.png)
+![Rata-rata Konsumsi Energi](images/gambar%203.png)
 
 Grafik ini menunjukkan rata-rata konsumsi energi (`EnergyConsumption`) berdasarkan hari dalam seminggu. Terlihat bahwa variasi antar hari relatif kecil, namun terdapat sedikit peningkatan pada hari Jumat dan Sabtu.
 
@@ -99,7 +99,7 @@ Grafik ini menunjukkan rata-rata konsumsi energi (`EnergyConsumption`) berdasark
 
 #### 4. Visualisasi Hubungan Antar Fitur Numerik
 
-![Pairplot Fitur Numerik](e619e93b-6de2-435a-976e-e4f84e2fc63e.png)
+![Pairplot Fitur Numerik](images/gambar%204.png)
 
 Melalui pairplot ini, dapat dilihat bagaimana hubungan antar fitur numerik dan distribusinya. Beberapa fitur memiliki hubungan linier lemah terhadap target, namun distribusi data cukup baik tanpa outliers ekstrem.
 
@@ -107,25 +107,69 @@ Melalui pairplot ini, dapat dilihat bagaimana hubungan antar fitur numerik dan d
 
 #### 5. Korelasi Antar Fitur
 
-![Correlation Matrix](60c8de9d-9492-4639-838a-e73c3cebc1b7.png)
+![Correlation Matrix](images/gambar%205.png)
 
 Heatmap korelasi ini menunjukkan bahwa `Temperature` memiliki korelasi cukup kuat dengan `EnergyConsumption` dibanding fitur lainnya. `Occupancy` dan `RenewableEnergy` juga memiliki korelasi positif yang cukup berarti, sementara fitur waktu seperti `Month` dan `Hour` memiliki korelasi sangat lemah.
 
-
 ## Data Preparation
-Pada bagian ini Anda menerapkan dan menyebutkan teknik data preparation yang dilakukan. Teknik yang digunakan pada notebook dan laporan harus berurutan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan proses data preparation yang dilakukan
-- Menjelaskan alasan mengapa diperlukan tahapan data preparation tersebut.
+Pada tahap ini, dilakukan beberapa proses persiapan data sebelum diterapkan pada model machine learning. Langkah-langkah yang dilakukan secara berurutan sebagai berikut:
+
+### 1. **Pengecekan Missing Value**
+Langkah pertama adalah memeriksa apakah terdapat nilai yang hilang dalam dataset. Ini penting karena data yang hilang dapat memengaruhi kinerja model prediksi. Hasil pemeriksaan menunjukkan bahwa tidak terdapat missing value di dalam dataset.
+
+### 2. **Encoding Variabel Kategorikal**
+Dataset mengandung beberapa fitur kategorikal seperti `DayOfWeek`, `Holiday`, `HVACUsage`, dan `LightingUsage`. Variabel-variabel ini perlu dikonversi ke bentuk numerik agar dapat digunakan dalam algoritma machine learning. Seluruh variabel kategorikal dikodekan menggunakan **Label Encoding**, karena pendekatan ini cukup efektif untuk model-model yang digunakan dalam proyek ini, serta mempertahankan bentuk sederhana dari dataset.
+
+### 3. **Feature Scaling**
+Beberapa fitur numerik seperti `Temperature`, `Humidity`, `SquareFootage`, `Occupancy`, dan `RenewableEnergy` memiliki rentang nilai yang berbeda-beda. Untuk menormalkan skala data, digunakan metode **MinMaxScaler** agar semua nilai berada pada rentang 0 hingga 1. Ini dilakukan untuk meningkatkan stabilitas dan konvergensi model, terutama bagi model yang sensitif terhadap skala seperti KNN atau regresi linier.
+
+### 4. **Pemisahan Fitur dan Target**
+Fitur input (`X`) terdiri dari seluruh kolom kecuali `EnergyConsumption` yang merupakan target prediksi (`y`).
+
+### 5. **Split Data: Train dan Test**
+Dataset dibagi menjadi data latih dan data uji dengan proporsi 80:20 menggunakan `train_test_split` dari scikit-learn. Ini dilakukan agar model dapat dilatih pada sebagian besar data dan diuji performanya pada data yang belum pernah dilihat.
 
 ## Modeling
-Tahapan ini membahas mengenai model machine learning yang digunakan untuk menyelesaikan permasalahan. Anda perlu menjelaskan tahapan dan parameter yang digunakan pada proses pemodelan.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan kelebihan dan kekurangan dari setiap algoritma yang digunakan.
-- Jika menggunakan satu algoritma pada solution statement, lakukan proses improvement terhadap model dengan hyperparameter tuning. **Jelaskan proses improvement yang dilakukan**.
-- Jika menggunakan dua atau lebih algoritma pada solution statement, maka pilih model terbaik sebagai solusi. **Jelaskan mengapa memilih model tersebut sebagai model terbaik**.
+Pada tahap ini, dilakukan pemodelan terhadap data dengan menggunakan enam algoritma regresi untuk memprediksi nilai `EnergyConsumption` sebagai variabel target. Model yang digunakan meliputi:
+
+- **Linear Regression**
+- **Ridge Regression**
+- **Lasso Regression**
+- **Random Forest Regressor**
+- **Gradient Boosting Regressor**
+- **XGBoost Regressor**
+
+### Tahapan Modeling
+
+Semua model dilatih menggunakan data latih (`x_train`, `y_train`) dan diuji performanya pada data uji (`x_test`, `y_test`). Evaluasi dilakukan menggunakan metrik:
+- Mean Squared Error (MSE)
+- Root Mean Squared Error (RMSE)
+- Mean Absolute Error (MAE)
+- R² Score
+
+### Parameter yang Digunakan
+
+- **Linear Regression, Gradient Boosting, Random Forest, XGBoost**: digunakan dengan parameter default.
+- **Ridge & Lasso Regression**: digunakan dengan parameter `alpha=1.0`.
+
+### Kelebihan dan Kekurangan Model
+
+| Model | Kelebihan | Kekurangan |
+|-------|-----------|------------|
+| Linear Regression | Sederhana, cepat, interpretatif | Tidak menangkap non-linearitas |
+| Ridge | Mengurangi multikolinearitas | Masih sensitif terhadap outlier |
+| Lasso | Melakukan seleksi fitur | Bisa mengeliminasi fitur penting |
+| Random Forest | Akurat, tahan terhadap overfitting | Interpretabilitas rendah, lebih lambat |
+| Gradient Boosting | Performa tinggi pada banyak kasus | Lebih kompleks dan rentan overfitting jika tidak diatur |
+| XGBoost | Cepat dan powerful, cocok untuk dataset besar | Perlu tuning parameter untuk performa optimal |
+
+### Pemilihan Model Terbaik
+
+Dari hasil evaluasi pada notebook, model terbaik dipilih berdasarkan kombinasi nilai **R² tertinggi dan error (MSE, RMSE, MAE) terendah** pada data uji (`test`). Berdasarkan hasil tersebut, **[Gradient Boosting]** dipilih sebagai model akhir karena memberikan performa paling optimal dalam memprediksi konsumsi energi.
+
+
 
 ## Evaluation
 Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
