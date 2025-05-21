@@ -122,7 +122,7 @@ Langkah pertama adalah memeriksa apakah terdapat nilai yang hilang dalam dataset
 Dataset mengandung beberapa fitur kategorikal seperti `DayOfWeek`, `Holiday`, `HVACUsage`, dan `LightingUsage`. Variabel-variabel ini perlu dikonversi ke bentuk numerik agar dapat digunakan dalam algoritma machine learning. Seluruh variabel kategorikal dikodekan menggunakan **Label Encoding**, karena pendekatan ini cukup efektif untuk model-model yang digunakan dalam proyek ini, serta mempertahankan bentuk sederhana dari dataset.
 
 ### 3. **Feature Scaling**
-Beberapa fitur numerik seperti `Temperature`, `Humidity`, `SquareFootage`, `Occupancy`, dan `RenewableEnergy` memiliki rentang nilai yang berbeda-beda. Untuk menormalkan skala data, digunakan metode **MinMaxScaler** agar semua nilai berada pada rentang 0 hingga 1. Ini dilakukan untuk meningkatkan stabilitas dan konvergensi model, terutama bagi model yang sensitif terhadap skala seperti KNN atau regresi linier.
+Beberapa fitur numerik seperti `Temperature`, `Humidity`, `SquareFootage`, `Occupancy`, dan `RenewableEnergy` memiliki rentang nilai yang berbeda-beda. Untuk menormalkan skala data, digunakan metode **StandardScaler** agar semua nilai berada pada rentang 0 hingga 1. Hal ini dilakukan untuk meningkatkan stabilitas dan konvergensi model.
 
 ### 4. **Pemisahan Fitur dan Target**
 Fitur input (`X`) terdiri dari seluruh kolom kecuali `EnergyConsumption` yang merupakan target prediksi (`y`).
@@ -134,12 +134,23 @@ Dataset dibagi menjadi data latih dan data uji dengan proporsi 80:20 menggunakan
 
 Pada tahap ini, dilakukan pemodelan terhadap data dengan menggunakan enam algoritma regresi untuk memprediksi nilai `EnergyConsumption` sebagai variabel target. Model yang digunakan meliputi:
 
-- **Linear Regression**
-- **Ridge Regression**
-- **Lasso Regression**
-- **Random Forest Regressor**
-- **Gradient Boosting Regressor**
-- **XGBoost Regressor**
+### 1. Linear Regression
+Linear Regression merupakan algoritma yang digunakan untuk memodelkan hubungan linear antara variabel input (fitur) dan variabel target. Model ini mencari garis lurus terbaik yang meminimalkan selisih kuadrat antara nilai prediksi dan nilai aktual.
+
+### 2. Ridge Regression
+Ridge Regression adalah pengembangan dari Linear Regression yang menggunakan regularisasi L2. Tujuannya adalah untuk mengurangi overfitting dengan menambahkan penalti terhadap nilai koefisien yang terlalu besar.
+
+### 3. Lasso Regression
+Lasso Regression menggunakan regularisasi L1 yang tidak hanya mengurangi overfitting, tapi juga dapat menghilangkan beberapa fitur yang kurang relevan (seleksi fitur otomatis).
+
+### 4. Random Forest Regressor
+Random Forest adalah algoritma ensemble yang membangun banyak pohon keputusan dan menggabungkan hasilnya untuk meningkatkan akurasi dan stabilitas. Model ini bekerja dengan cara melakukan voting (untuk klasifikasi) atau rata-rata (untuk regresi) dari hasil pohon-pohon tersebut.
+
+### 5. Gradient Boosting Regressor
+Gradient Boosting merupakan teknik boosting yang membangun model secara bertahap, dengan setiap model baru mencoba memperbaiki kesalahan dari model sebelumnya. Proses ini berlanjut hingga tercapai performa optimal.
+
+### 6. XGBoost Regressor
+XGBoost (Extreme Gradient Boosting) adalah versi optimasi dari Gradient Boosting yang dirancang untuk efisiensi, kecepatan, dan akurasi. XGBoost menggunakan teknik regularisasi tambahan untuk mencegah overfitting dan mengelola kompleksitas model.
 
 ### Tahapan Modeling
 
@@ -165,27 +176,47 @@ Semua model dilatih menggunakan data latih (`x_train`, `y_train`) dan diuji perf
 | Gradient Boosting | Performa tinggi pada banyak kasus | Lebih kompleks dan rentan overfitting jika tidak diatur |
 | XGBoost | Cepat dan powerful, cocok untuk dataset besar | Perlu tuning parameter untuk performa optimal |
 
-### Pemilihan Model Terbaik
-
-Dari hasil evaluasi pada notebook, model terbaik dipilih berdasarkan kombinasi nilai **R² tertinggi dan error (MSE, RMSE, MAE) terendah** pada data uji (`test`). Berdasarkan hasil tersebut, **[Gradient Boosting]** dipilih sebagai model akhir karena memberikan performa paling optimal dalam memprediksi konsumsi energi.
-
-
-
 ## Evaluation
-Pada bagian ini anda perlu menyebutkan metrik evaluasi yang digunakan. Lalu anda perlu menjelaskan hasil proyek berdasarkan metrik evaluasi yang digunakan.
 
-Sebagai contoh, Anda memiih kasus klasifikasi dan menggunakan metrik **akurasi, precision, recall, dan F1 score**. Jelaskan mengenai beberapa hal berikut:
-- Penjelasan mengenai metrik yang digunakan
-- Menjelaskan hasil proyek berdasarkan metrik evaluasi
+### Metrik Evaluasi
 
-Ingatlah, metrik evaluasi yang digunakan harus sesuai dengan konteks data, problem statement, dan solusi yang diinginkan.
+Karena proyek ini bertujuan untuk memprediksi nilai numerik (*regression*), maka digunakan metrik evaluasi sebagai berikut:
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
-- Menjelaskan formula metrik dan bagaimana metrik tersebut bekerja.
+| Metrik         | Penjelasan                                                                 |
+|----------------|----------------------------------------------------------------------------|
+| MAE (Mean Absolute Error) | Rata-rata selisih absolut antara nilai aktual dan prediksi. Semakin kecil, semakin baik. |
+| MSE (Mean Squared Error)  | Rata-rata dari kuadrat selisih antara nilai aktual dan prediksi. Lebih sensitif terhadap kesalahan besar. |
+| RMSE (Root Mean Squared Error) | Akar kuadrat dari MSE. Mengembalikan kesalahan dalam satuan yang sama dengan target. |
+| R² Score       | Mengukur proporsi variansi data target yang dapat dijelaskan oleh model. Semakin mendekati 1, semakin baik. |
 
-**---Ini adalah bagian akhir laporan---**
+---
 
-_Catatan:_
-- _Anda dapat menambahkan gambar, kode, atau tabel ke dalam laporan jika diperlukan. Temukan caranya pada contoh dokumen markdown di situs editor [Dillinger](https://dillinger.io/), [Github Guides: Mastering markdown](https://guides.github.com/features/mastering-markdown/), atau sumber lain di internet. Semangat!_
-- Jika terdapat penjelasan yang harus menyertakan code snippet, tuliskan dengan sewajarnya. Tidak perlu menuliskan keseluruhan kode project, cukup bagian yang ingin dijelaskan saja.
+### Hasil Evaluasi Model
+
+| Model              | MSE Train | MSE Test | RMSE Train | RMSE Test | MAE Train | MAE Test | R² Train | R² Test |
+|--------------------|-----------|----------|------------|-----------|-----------|----------|----------|---------|
+| **Random Forest**        | 8.36      | 64.39    | 2.89       | 8.02      | 2.28      | 6.36     | 0.90     | 0.23    |
+| **Gradient Boosting**    | 49.48     | 61.08    | 7.03       | 7.82      | 5.60      | 6.16     | 0.42     | 0.27    |
+| **Linear Regression**    | 57.71     | 61.09    | 7.60       | 7.82      | 6.06      | 6.17     | 0.33     | 0.27    |
+| **Ridge Regression**     | 57.71     | 61.09    | 7.60       | 7.82      | 6.06      | 6.17     | 0.33     | 0.27    |
+| **Lasso Regression**     | 60.82     | 61.74    | 7.80       | 7.86      | 6.23      | 6.19     | 0.29     | 0.26    |
+| **XGBoost**              | 5.47      | 73.41    | 2.34       | 8.57      | 1.74      | 6.72     | 0.94     | 0.12    |
+
+---
+
+### Analisis Perbandingan Model
+
+- **Random Forest** menunjukkan performa paling seimbang dan stabil, dengan skor R² sebesar **0.90** di data latih dan **0.23** di data uji. Meskipun terjadi overfitting ringan, model ini tetap memberikan hasil yang layak pada data baru.
+- **XGBoost** mencapai skor R² tertinggi di data latih (**0.94**) dan error paling rendah, namun performanya drop cukup signifikan pada data uji (**R² = 0.12**), menunjukkan overfitting yang lebih besar.
+- **Linear, Ridge, dan Lasso Regression** menunjukkan performa yang hampir identik, dengan R² sekitar **0.26–0.27**, mengindikasikan bahwa model linier sederhana kurang mampu menangkap kompleksitas pola dalam data.
+- **Gradient Boosting** memberikan hasil yang relatif seimbang dengan error lebih kecil dibanding model linier, namun masih di bawah Random Forest dalam hal generalisasi.
+
+---
+
+### Kesimpulan Evaluasi (Berbasis Metrik)
+
+- Model terbaik dipilih berdasarkan **kombinasi metrik** (MAE, MSE, RMSE, dan R² Score) serta keseimbangan antara performa di data latih dan uji.
+- **Random Forest** menjadi pilihan akhir karena memberikan akurasi prediksi yang relatif stabil dan kesalahan yang paling kecil di data uji, dibandingkan model lain yang cenderung overfit atau terlalu sederhana.
+- Evaluasi metrik ini menunjukkan bahwa untuk dataset dengan kompleksitas tinggi, pendekatan **ensemble tree-based** cenderung lebih optimal dibanding regresi linier biasa.
+
 
