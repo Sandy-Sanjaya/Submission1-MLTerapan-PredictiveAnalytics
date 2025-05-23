@@ -115,20 +115,17 @@ Heatmap korelasi ini menunjukkan bahwa `Temperature` memiliki korelasi cukup kua
 
 Pada tahap ini, dilakukan beberapa proses persiapan data sebelum diterapkan pada model machine learning. Langkah-langkah yang dilakukan secara berurutan sebagai berikut:
 
-### 1. **Pengecekan Missing Value**
-Langkah pertama adalah memeriksa apakah terdapat nilai yang hilang dalam dataset. Ini penting karena data yang hilang dapat memengaruhi kinerja model prediksi. Hasil pemeriksaan menunjukkan bahwa tidak terdapat missing value di dalam dataset.
-
-### 2. **Encoding Variabel Kategorikal**
+### 1. **Encoding Variabel Kategorikal**
 Dataset mengandung beberapa fitur kategorikal seperti `DayOfWeek`, `Holiday`, `HVACUsage`, dan `LightingUsage`. Variabel-variabel ini perlu dikonversi ke bentuk numerik agar dapat digunakan dalam algoritma machine learning. Seluruh variabel kategorikal dikodekan menggunakan **Label Encoding**, karena pendekatan ini cukup efektif untuk model-model yang digunakan dalam proyek ini, serta mempertahankan bentuk sederhana dari dataset.
 
-### 3. **Feature Scaling**
-Beberapa fitur numerik seperti `Temperature`, `Humidity`, `SquareFootage`, `Occupancy`, dan `RenewableEnergy` memiliki rentang nilai yang berbeda-beda. Untuk menormalkan skala data, digunakan metode **StandardScaler** agar semua nilai berada pada rentang 0 hingga 1. Hal ini dilakukan untuk meningkatkan stabilitas dan konvergensi model.
-
-### 4. **Pemisahan Fitur dan Target**
+### 2. **Pemisahan Fitur dan Target**
 Fitur input (`X`) terdiri dari seluruh kolom kecuali `EnergyConsumption` yang merupakan target prediksi (`y`).
 
-### 5. **Split Data: Train dan Test**
+### 3. **Split Data: Train dan Test**
 Dataset dibagi menjadi data latih dan data uji dengan proporsi 80:20 menggunakan `train_test_split` dari scikit-learn. Ini dilakukan agar model dapat dilatih pada sebagian besar data dan diuji performanya pada data yang belum pernah dilihat.
+
+### 4. **Feature Scaling**
+Beberapa fitur numerik seperti `Temperature`, `Humidity`, `SquareFootage`, `Occupancy`, dan `RenewableEnergy` memiliki rentang nilai yang berbeda-beda. Untuk menormalkan skala data, digunakan metode **StandardScaler** agar semua nilai berada pada rentang 0 hingga 1. Hal ini dilakukan untuk meningkatkan stabilitas dan konvergensi model.
 
 ## Modeling
 
