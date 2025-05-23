@@ -216,4 +216,32 @@ Karena proyek ini bertujuan untuk memprediksi nilai numerik (*regression*), maka
 - **Random Forest** menjadi pilihan akhir karena memberikan akurasi prediksi yang relatif stabil dan kesalahan yang paling kecil di data uji, dibandingkan model lain yang cenderung overfit atau terlalu sederhana.
 - Evaluasi metrik ini menunjukkan bahwa untuk dataset dengan kompleksitas tinggi, pendekatan **ensemble tree-based** cenderung lebih optimal dibanding regresi linier biasa.
 
+#### 1. Kesesuaian dengan Problem Statements
+- ✅ **Prediksi konsumsi energi bangunan** berhasil dilakukan dengan baik menggunakan model machine learning, terutama Random Forest yang memberikan hasil terbaik dalam meminimalkan kesalahan prediksi. Hal ini menjawab kebutuhan organisasi dalam memperkirakan kebutuhan energi secara lebih akurat dan efisien.
+- ✅ Model mampu **mengungkap adanya hubungan signifikan** antara waktu (bulan, jam, hari), serta faktor internal bangunan seperti `Occupancy` dan `SquareFootage`, terhadap tingkat konsumsi energi. Hal ini diperkuat melalui analisis korelasi dan performa model prediktif yang mempertimbangkan fitur-fitur tersebut.
+- ✅ Fitur `RenewableEnergy` berhasil diikutsertakan dalam model dan dianalisis kontribusinya. Walaupun korelasinya terhadap target tidak dominan, model tetap memprosesnya sebagai faktor penting dalam **estimasi total konsumsi energi**, mendukung evaluasi terhadap energi bersih (*net energy consumption*).
+
+#### 2. Pencapaian Goals
+- 🎯 Proyek ini berhasil **menghasilkan model prediktif yang akurat** untuk memproyeksikan `EnergyConsumption` berdasarkan data historis dan variabel operasional serta lingkungan.
+- 🎯 Variabel penting seperti `Temperature`, `Occupancy`, dan `Hour` telah dianalisis secara statistik dan melalui korelasi, sehingga memberikan pemahaman yang lebih mendalam mengenai faktor yang paling mempengaruhi konsumsi energi.
+- 🎯 Fitur `RenewableEnergy` digunakan dalam model sebagai bagian dari strategi untuk memahami dan mengukur **dampak energi terbarukan**, sesuai dengan tujuan efisiensi dan keberlanjutan energi.
+
+#### 3. Dampak dari Solution Statements
+- 💡 Penggunaan enam algoritma regresi memungkinkan eksplorasi menyeluruh terhadap berbagai pendekatan prediktif. Model yang kompleks seperti Random Forest terbukti lebih efektif daripada model linier dalam konteks data ini.
+- 💡 Evaluasi dengan metrik MAE, MSE, RMSE, dan R² Score memberikan ukuran performa yang kuat, serta memungkinkan pemilihan model yang paling sesuai dengan konteks masalah.
+- 💡 Hasil proyek ini memiliki **dampak langsung terhadap pengambilan keputusan manajemen energi**, dengan potensi untuk mengurangi pemborosan, merespons lonjakan kebutuhan energi secara real-time, dan mendukung integrasi energi terbarukan dalam sistem pengelolaan bangunan.
+
+---
+
+### Kesimpulan Umum
+
+Proyek ini membuktikan bahwa pendekatan berbasis *predictive analytics* dapat diterapkan secara efektif dalam domain manajemen energi bangunan. Hasil prediksi yang dihasilkan dapat dimanfaatkan oleh perusahaan atau pengelola fasilitas untuk:
+- Mengoptimalkan penggunaan HVAC dan pencahayaan,
+- Menyusun strategi efisiensi energi jangka panjang,
+- Mendukung inisiatif penggunaan energi ramah lingkungan melalui integrasi energi terbarukan.
+
+Dengan demikian, solusi yang dibangun tidak hanya valid secara teknis, tetapi juga **bernilai strategis** dalam konteks pengelolaan energi yang lebih cerdas dan berkelanjutan.
+
+
+
 
