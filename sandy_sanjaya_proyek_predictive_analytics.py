@@ -12,8 +12,11 @@ Original file is located at
 *   ID Dicoding: Sandy Sanjaya
 
 # **Import Library**
+
+Mengimpor library yang dibutuhkan untuk manipulasi data, visualisasi, dan pemodelan machine learning
 """
 
+# Melakukan import library
 import pandas as pd
 import numpy as np
 import os
@@ -36,7 +39,10 @@ import plotly.graph_objects as go
 import warnings
 warnings.filterwarnings("ignore")
 
-"""# **Load Dataset**"""
+"""# **Load Dataset**
+
+Melakukan load data set energy consumption
+"""
 
 # Load Dataset
 dataset_path = 'Energy_consumption_dataset.csv'
@@ -71,25 +77,31 @@ RenewableEnergy : Variabel numerik yang menunjukkan persentase kontribusi dari s
 EnergyConsumption : Variabel target numerik yang menunjukkan total energi yang dikonsumsi.
 
 # **Exploratory Data Analysis (EDA)**
+
+Menampilkan informasi umum tentang dataset seperti jumlah entri, kolom, tipe data, dan nilai non-null pada tiap kolom
 """
 
 # Menampilkan informasi umum tentang dataset
 df.info()
 
+"""Menampilkan statistik deskriptif seperti mean, median, standar deviasi, nilai minimum dan maksimum untuk kolom numerik"""
+
 # Menampilkan statistik deskriptif
 df.describe()
 
-"""**Mengecek Missing Values**"""
+"""Cek apakah terdapat data yang kosong pada masing-masing fitur"""
 
 # Mengecek missing values
 missing_values = pd.DataFrame(df.isna().sum().reset_index(name='Jumlah Missing'))
 missing_values.columns = ['Kolom', 'Jumlah Missing']
 missing_values
 
+"""Cek apakah terdapat data yang duplikat"""
+
 # Mengecek data duplikat
 df.duplicated().sum()
 
-"""**Menangani Outliers**"""
+"""Cek apakah terdapat data yang mengalami outliers"""
 
 # Identifikasi kolom numerik dan kategorikal
 num_cols = df.select_dtypes(include=['int64', 'float64']).columns
@@ -111,7 +123,11 @@ plt.show()
 
 """# **Univariate Analysis**
 
+**Analisis univariat dilakukan untuk memahami karakteristik masing-masing variabel secara individu, seperti distribusi, sebaran, dan nilai ekstrem.**
+
 ## **Numerical Features**
+
+Membuat visualisasi distribusi data numerik menggunakan histogram dan kurva KDE untuk memahami pola sebaran tiap fitur
 """
 
 # Visualisasi distribusi dengan histogram dan KDE
@@ -125,7 +141,10 @@ for index, cols in enumerate(num_cols):
 plt.tight_layout()
 plt.show()
 
-"""## **Categorical Features**"""
+"""## **Categorical Features**
+
+Membuat visualisasi frekuensi data kategorikal untuk melihat sebaran jumlah tiap kategori dalam masing-masing fitur.
+"""
 
 # Visualisasi distribusi kategori
 f, ax = plt.subplots(2, 2, figsize=(15, 10))
@@ -138,7 +157,12 @@ for index, cols in enumerate(cat_cols):
 plt.tight_layout()
 plt.show()
 
-"""# **Multivariate Analysis**"""
+"""# **Multivariate Analysis**
+
+**Analisis multivariat dilakukan untuk memahami hubungan atau pola antar dua atau lebih variabel dalam dataset.**
+
+Menampilkan tren rata-rata konsumsi energi bulanan untuk mengamati pola musiman atau fluktuasi sepanjang tahun
+"""
 
 # Rata-rata konsumsi energi per bulan
 mas = df.groupby(['Month'])['EnergyConsumption'].mean().reset_index(name = 'Average EC')
@@ -148,6 +172,8 @@ sns.lineplot(mas, x = 'Month', y= 'Average EC', marker = 'o')
 plt.title('Changes in average energy consumption by Month')
 plt.show()
 
+"""Menampilkan rata-rata konsumsi energi per jam untuk mengidentifikasi pola penggunaan energi dalam sehari"""
+
 # Rata-rata konsumsi energi per jam
 mhs = df.groupby(['Hour'])['EnergyConsumption'].mean().reset_index(name = 'Average EC')
 
@@ -155,6 +181,8 @@ plt.figure(figsize=(10,7))
 sns.lineplot(mhs, x = 'Hour', y= 'Average EC', marker = 'o')
 plt.title('Changes in average energy consumption by Hour')
 plt.show()
+
+"""Menampilkan rata-rata konsumsi energi berdasarkan hari dalam seminggu untuk melihat perbedaan pola konsumsi antar hari"""
 
 # Rata-rata konsumsi energi per hari dalam seminggu
 dowec = df.groupby(['DayOfWeek'])['EnergyConsumption'].mean().reset_index(name = 'Average EC')
@@ -165,10 +193,14 @@ ax.bar_label(ax.containers[0], fontsize=10)
 plt.title('Average energy consumption by day of the week')
 plt.show()
 
+"""Menampilkan pairplot untuk mengeksplorasi hubungan antar fitur numerik dan distribusinya"""
+
 # Visualisasi hubungan pasangan fitur numerik
 sns.pairplot(df[num_cols], diag_kind='kde')
 plt.suptitle('Pairplot of Numerical Features', y=1.02)
 plt.show()
+
+"""Menampilkan heatmap korelasi untuk mengidentifikasi hubungan linear antar fitur numerik"""
 
 # Visualisasi melalui correlation matrix
 plt.figure(figsize=(12, 8))
@@ -179,6 +211,8 @@ plt.show()
 """# **Data Preparation/Data Preprocessing**
 
 ## **Encoding Fitur Kategori**
+
+Melakukan label encoding pada fitur kategorikal untuk mengubah nilai kategori menjadi format numerik
 """
 
 # Label Encoding fitur kategorikal
@@ -187,7 +221,10 @@ for col in cat_cols:
     df[col] = label_encoder.fit_transform(df[col])
 df.head()
 
-"""## **Train Test Split**"""
+"""## **Train Test Split**
+
+Memisahkan fitur dan target, lalu membagi data menjadi data latih dan data uji dengan proporsi 80:20
+"""
 
 # Memisahkan fitur (X) dan target (y)
 x = df.drop(['EnergyConsumption'], axis=1)
@@ -202,7 +239,10 @@ print(f'Total # of sample in whole dataset: {len(x)}')
 print(f'Total # of sample in train dataset: {len(x_train)}')
 print(f'Total # of sample in test dataset: {len(x_test)}')
 
-"""## **Standardisasi**"""
+"""## **Standardisasi**
+
+Melakukan standarisasi fitur numerik pada data latih untuk mengatur skala nilai agar model lebih optimal
+"""
 
 # Identifikasi kolom numerik (kecuali target)
 num_features = x.select_dtypes(include=['int64', 'float64']).columns
@@ -215,7 +255,10 @@ x_train[num_features] = scaler.fit_transform(x_train[num_features])
 
 x_train[num_features].describe().round(4)
 
-"""# **Model Development**"""
+"""# **Model Development**
+
+Menginisialisasi berbagai model regresi untuk dibandingkan performanya dalam prediksi
+"""
 
 # Inisialisasi model-model regresi
 rfc = RandomForestRegressor()       # Random Forest Regressor
@@ -238,10 +281,15 @@ names = [
     "XGBoost"
 ]
 
-"""# **Evaluasi Model**"""
+"""# **Evaluasi Model**
+
+Mentransformasi fitur numerik pada data uji menggunakan scaler yang sudah di-fit pada data latih untuk menjaga konsistensi skala
+"""
 
 # Transform pada test set menggunakan scaler yang sudah di-fit dari training
 x_test[num_features] = scaler.transform(x_test[num_features])
+
+"""Melatih setiap model regresi, menghitung metrik evaluasi (MSE, RMSE, MAE, R²) pada data latih dan uji, lalu menyimpan hasilnya untuk perbandingan performa"""
 
 # Buat dictionary model
 model_dict = {
@@ -289,6 +337,8 @@ for name, model in model_dict.items():
 # Tampilkan hasil evaluasi
 metrics_df
 
+"""Menampilkan perbandingan MSE pada data uji untuk tiap model dalam bentuk horizontal bar chart agar mudah melihat model dengan error terbesar hingga terkecil"""
+
 # Plot horizontal bar chart berdasarkan MSE_test
 fig, ax = plt.subplots(figsize=(8, 5))  # Ukuran bisa disesuaikan
 
@@ -308,6 +358,8 @@ ax.grid(zorder=0, linestyle='--', alpha=0.6)
 plt.tight_layout()
 plt.show()
 
+"""Menampilkan perbandingan RMSE pada data uji untuk setiap model dalam bentuk horizontal bar chart guna memudahkan evaluasi performa model"""
+
 # Plot horizontal bar chart berdasarkan RMSE_test
 fig, ax = plt.subplots(figsize=(8, 5))
 
@@ -326,6 +378,8 @@ ax.set_ylabel("Model")
 ax.grid(zorder=0, linestyle='--', alpha=0.6)
 plt.tight_layout()
 plt.show()
+
+"""Melakukan prediksi pada satu sampel data uji menggunakan semua model, lalu menyimpan dan menampilkan hasil prediksi beserta nilai sebenarnya untuk perbandingan"""
 
 # Ambil satu sampel dari data uji untuk prediksi
 prediksi = x_test.iloc[:1].copy()
