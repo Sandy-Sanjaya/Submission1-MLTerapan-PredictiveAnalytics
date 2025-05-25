@@ -131,36 +131,47 @@ Beberapa fitur numerik seperti `Temperature`, `Humidity`, `SquareFootage`, `Occu
 
 Pada tahap ini, dilakukan pemodelan terhadap data dengan menggunakan enam algoritma regresi untuk memprediksi nilai `EnergyConsumption` sebagai variabel target. Model yang digunakan meliputi:
 
+---
+
 ### 1. Linear Regression
-Linear Regression merupakan algoritma yang digunakan untuk memodelkan hubungan linear antara variabel input (fitur) dan variabel target. Model ini mencari garis lurus terbaik yang meminimalkan selisih kuadrat antara nilai prediksi dan nilai aktual.
+Linear Regression bekerja dengan memodelkan hubungan linear antara fitur input dan target. Algoritma ini mencari garis terbaik yang meminimalkan selisih kuadrat antara nilai aktual dan nilai prediksi.
+
+> Model ini menggunakan parameter **default**, karena Linear Regression dijadikan sebagai baseline model. Tujuannya adalah untuk memberikan pembanding awal terhadap model yang lebih kompleks.
+
+---
 
 ### 2. Ridge Regression
-Ridge Regression adalah pengembangan dari Linear Regression yang menggunakan regularisasi L2. Tujuannya adalah untuk mengurangi overfitting dengan menambahkan penalti terhadap nilai koefisien yang terlalu besar.
+Ridge Regression merupakan pengembangan dari Linear Regression yang menambahkan regularisasi L2. Teknik ini membantu mencegah overfitting dengan memberikan penalti pada koefisien regresi yang besar.
+
+> Parameter yang digunakan adalah **default** (`alpha = 1.0`), karena fokus proyek ini adalah pada evaluasi komparatif antar algoritma, bukan tuning parameter.
+
+---
 
 ### 3. Lasso Regression
-Lasso Regression menggunakan regularisasi L1 yang tidak hanya mengurangi overfitting, tapi juga dapat menghilangkan beberapa fitur yang kurang relevan (seleksi fitur otomatis).
+Lasso Regression mirip dengan Ridge, tetapi menggunakan regularisasi L1. Keunikan Lasso adalah kemampuannya untuk melakukan seleksi fitur, karena beberapa koefisien dapat ditekan menjadi nol.
+
+> Parameter yang digunakan adalah **default** (`alpha = 1.0`), karena proyek tidak secara eksplisit fokus pada pemilihan fitur terbaik, melainkan pada evaluasi performa prediktif.
+
+---
 
 ### 4. Random Forest Regressor
-Random Forest adalah algoritma ensemble yang membangun banyak pohon keputusan dan menggabungkan hasilnya untuk meningkatkan akurasi dan stabilitas. Model ini bekerja dengan cara melakukan voting (untuk klasifikasi) atau rata-rata (untuk regresi) dari hasil pohon-pohon tersebut.
+Random Forest adalah algoritma ensemble yang membangun banyak pohon keputusan (*decision tree*) pada subset data yang berbeda. Hasil prediksi diambil rata-ratanya untuk regresi. Model ini kuat terhadap overfitting dan efektif untuk menangani hubungan non-linear.
+
+> Model ini dijalankan dengan **parameter default**, karena tujuan utama adalah membandingkan performa umum antar algoritma tanpa tuning lanjutan.
+
+---
 
 ### 5. Gradient Boosting Regressor
-Gradient Boosting merupakan teknik boosting yang membangun model secara bertahap, dengan setiap model baru mencoba memperbaiki kesalahan dari model sebelumnya. Proses ini berlanjut hingga tercapai performa optimal.
+Gradient Boosting membangun model secara bertahap, di mana setiap model baru mencoba mengoreksi kesalahan dari model sebelumnya menggunakan pendekatan gradient descent. Model ini cenderung memiliki akurasi tinggi dan cocok untuk data yang kompleks.
+
+> Parameter default digunakan untuk menjaga konsistensi eksperimen dan fokus pada perbandingan antar algoritma, bukan eksplorasi hyperparameter.
+
+---
 
 ### 6. XGBoost Regressor
-XGBoost (Extreme Gradient Boosting) adalah versi optimasi dari Gradient Boosting yang dirancang untuk efisiensi, kecepatan, dan akurasi. XGBoost menggunakan teknik regularisasi tambahan untuk mencegah overfitting dan mengelola kompleksitas model.
+XGBoost adalah pengembangan dari Gradient Boosting yang lebih efisien dan dilengkapi dengan regularisasi tambahan (L1 dan L2) untuk mengontrol kompleksitas model. XGBoost juga memiliki fitur-fitur optimasi yang membuatnya sangat populer dalam kompetisi data science.
 
-### Tahapan Modeling
-
-Semua model dilatih menggunakan data latih (`x_train`, `y_train`) dan diuji performanya pada data uji (`x_test`, `y_test`). Evaluasi dilakukan menggunakan metrik:
-- Mean Squared Error (MSE)
-- Root Mean Squared Error (RMSE)
-- Mean Absolute Error (MAE)
-- R² Score
-
-### Parameter yang Digunakan
-
-- **Linear Regression, Gradient Boosting, Random Forest, XGBoost**: digunakan dengan parameter default.
-- **Ridge & Lasso Regression**: digunakan dengan parameter `alpha=1.0`.
+> Model dijalankan dengan **parameter default**, karena proyek ini bertujuan untuk mengevaluasi efektivitas model secara umum sebelum masuk ke tahap tuning.
 
 ### Kelebihan dan Kekurangan Model
 
